@@ -19,8 +19,8 @@
 | --- | --- | --- | --- |
 | 1 | 老化醫學／粒線體主題部落格，手機版不破框 | 完成 | 375px 實測：首頁與文章頁 `scrollWidth == 375`，無橫向溢出；表格包在 `.table-scroll` 內自行捲動 |
 | 2 | 每篇文章獨立網址 | 完成 | `/posts/<slug>/index.html`，同子網域 |
-| 3 | HERO 圖 + 出處標在 footer | 完成 | 六張本站原創 SVG 資訊圖，以 CC BY 4.0 釋出；頁尾依當頁實際用圖顯示對應出處 |
-| 4 | 文章標作者；HERO 圖等比縮放不超過內文寬 | 完成 | `作者 ALEX`；手機渲染 335×210，比例 1.600 與原圖一致，上限 `--content-width: 44rem` |
+| 3 | HERO 圖 + CC BY 出處標在 footer | 完成 | Wikimedia《Cellular senescence》/ Velichko Artem / CC BY 4.0，標示在每頁 `.site-footer` |
+| 4 | 文章標作者；HERO 圖等比縮放不超過內文寬 | 完成 | `作者 ALEX`；手機渲染 335×223，比例 1.504 與原圖一致，上限 `--content-width: 44rem` |
 | 5 | 文章與首頁卡片都有日期，更新自動換日期 | 完成 | `content/post-state.json` 存內容雜湊，`scripts/build.mjs` 比對後改「最後更新」 |
 | 6 | 首頁列表寫死在 HTML，不用 JS 讀 JSON | 完成 | `dist/index.html` 內含完整 `<article>` 卡片；JS 只負責填瀏覽數字 |
 | 7 | 新增／修改文章後首頁自動加卡片、重排序 | 完成 | `npm run build` 依「最後更新」由新到舊排序 |
@@ -29,16 +29,21 @@
 
 **GitHub Pages 網址（已上線）**：<https://clkcll-code.github.io/aging-medicine-blog/>
 
-### 圖片改版（2026-08-02）
+### 圖片：曾改版為原創 SVG，已回退（2026-08-02）
 
-原本五篇共用同一張 Wikimedia 照片。已改為**每篇一張本站原創 SVG 資訊圖**，理由是：
+一度把五篇改成各自的原創 SVG 資訊圖，但**手寫 SVG 達不到期望的科學插畫質感**（參考標準是點陣渲染的期刊級插圖），依使用者要求已全部回退，恢復成五篇共用同一張 Wikimedia CC BY 照片。
 
-- 完全避開第三方授權問題（使用者要求「無版權問題」）
-- 每張圖直接畫出該篇的核心論點，不只是裝飾
-- 深色資訊圖表風格（參考使用者提供的研究週報版面），六張視覺語言一致
-- 向量檔約 5 KB，比照片小 20 倍，手機載入快且不會糊
+- 回退的目標版本：commit `66ce52f`
+- SVG 版本仍在 git 歷史裡（commit `3673358`），要拿回來隨時可以
+- 那版另外做過的 `images` 圖片登記表架構（每張圖自帶尺寸與授權）也一併回退了；等生成的圖到位要做「每篇一張」時，把那個 commit 的 `build.mjs` 與 `site.config.json` 改動撿回來即可
 
-`site.config.json` 新增 `images` 登記表，每張圖自帶尺寸、替代文字與授權。**圖片沒登記就建置失敗**，避免漏標出處。舊的 `hero-cellular-senescence.jpg` 已刪除。
+**下一步**：使用者用影像生成工具產圖，提示詞已寫在 [IMAGE-PROMPTS.md](IMAGE-PROMPTS.md)。拿到檔案後再重新接上每篇一張的架構。
+
+### 修掉一個潛伏的日期 bug（2026-08-02）
+
+回退過程中發現：`build.mjs` 把換行字元也算進內容雜湊，而 git 在 Windows 上會把 `.md` 簽出成 CRLF、在 Linux 上是 LF。結果同一份內容在不同平台算出不同雜湊，「最後更新」會被誤判成建置當天 —— 就算乖乖 commit `post-state.json` 也擋不住，GitHub Actions 上跑一次就會全部跳成當天。
+
+修法：雜湊前先把換行正規化成 LF。修完後重算的雜湊與最初記錄的完全相同，日期正確還原成 2026-05-18／06-09／07-14／08-01／08-02。
 
 GitHub 儲存庫：<https://github.com/clkcll-code/aging-medicine-blog>（帳號 `clkcll-code`，`gh` CLI 已登入）
 

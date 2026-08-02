@@ -267,7 +267,12 @@ function readPosts() {
       const slug = data.slug || file.replace(/\.md$/, '').replace(/^\d{4}-\d{2}-\d{2}-/, '')
 
       // 內容雜湊決定「最後更新」日期：內容一變，日期就換成建置當天。
-      const fingerprint = hashOf(JSON.stringify({ data: { ...data, updated: undefined }, body }))
+      // 換行先正規化成 LF —— git 在 Windows 上會把檔案簽出成 CRLF，
+      // 若把換行字元算進雜湊，同一份內容在不同平台會得到不同結果，
+      // 日期就會莫名其妙跳成建置當天。
+      const fingerprint = hashOf(
+        JSON.stringify({ data: { ...data, updated: undefined }, body: body.replace(/\r\n/g, '\n') })
+      )
       const prev = state[slug]
       const published = data.date || prev?.published || TODAY
       const updated = !prev ? published : prev.hash === fingerprint ? prev.updated : TODAY
