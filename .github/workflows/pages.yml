@@ -25,9 +25,13 @@ jobs:
         with:
           node-version-file: .node-version
 
-      # 專案零外部依賴，不需要 npm install
+      # 專案零外部依賴，不需要 npm install。
+      # GitHub Pages 的專案站台掛在 /<repo>/ 底下，要把 base path 帶進去，
+      # 否則 /styles.css 這類絕對路徑會指到網域根目錄而 404。
       - name: Build
         run: node scripts/build.mjs
+        env:
+          BASE_PATH: /${{ github.event.repository.name }}
 
       - uses: actions/configure-pages@v5
 

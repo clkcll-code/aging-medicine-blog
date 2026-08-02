@@ -29,6 +29,18 @@ const STATE_FILE = path.join(ROOT, 'content', 'post-state.json')
 const config = readJSON(path.join(ROOT, 'site.config.json'))
 const TODAY = todayISO()
 
+// GitHub Pages 的專案站台掛在 /<repo>/ 底下，根目錄絕對路徑會指錯地方。
+// Cloudflare Pages 則直接掛在網域根目錄。用環境變數切換，同一份原始碼兩邊都能用。
+//   Cloudflare：node scripts/build.mjs
+//   GitHub    ：BASE_PATH=/aging-medicine-blog node scripts/build.mjs
+const BASE = (process.env.BASE_PATH || config.basePath || '').replace(/\/+$/, '')
+
+/** 把站內絕對路徑補上 base path。外部網址原樣放行。 */
+function u(p) {
+  if (!p || /^(https?:)?\/\//.test(p) || p.startsWith('#') || p.startsWith('mailto:')) return p
+  return BASE + p
+}
+
 // ---------------------------------------------------------------- 小工具
 
 function readJSON(file, fallback = null) {
@@ -320,11 +332,11 @@ ${canonical && config.siteUrl ? `<link rel="canonical" href="${config.siteUrl}${
 <meta property="og:type" content="website">
 <meta property="og:title" content="${esc(fullTitle)}">
 <meta property="og:description" content="${esc(description)}">
-<meta property="og:image" content="${config.hero.src}">
+<meta property="og:image" content="${u(config.hero.src)}">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="alternate" type="application/rss+xml" title="${esc(siteTitle)}" href="/rss.xml">
-<link rel="stylesheet" href="/styles.css">
-<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="alternate" type="application/rss+xml" title="${esc(siteTitle)}" href="${u('/rss.xml')}">
+<link rel="stylesheet" href="${u('/styles.css')}">
+<link rel="icon" href="${u('/favicon.svg')}" type="image/svg+xml">
 ${head}
 ${supabaseBootstrap()}
 </head>
@@ -332,13 +344,13 @@ ${supabaseBootstrap()}
 <a class="skip-link" href="#main">跳到主要內容</a>
 <header class="site-header">
   <div class="wrap header-inner">
-    <a class="brand" href="/">
+    <a class="brand" href="${u('/')}">
       <span class="brand-mark" aria-hidden="true"></span>
       <span class="brand-text">${esc(siteTitle)}</span>
     </a>
     <nav class="site-nav" aria-label="主選單">
-      <a href="/">首頁</a>
-      <a href="/rss.xml">RSS</a>
+      <a href="${u('/')}">首頁</a>
+      <a href="${u('/rss.xml')}">RSS</a>
     </nav>
   </div>
 </header>
@@ -346,7 +358,7 @@ ${supabaseBootstrap()}
 ${content}
 </main>
 ${footer()}
-<script src="/counter.js" defer></script>
+<script src="${u('/counter.js')}" defer></script>
 </body>
 </html>
 `
@@ -386,7 +398,7 @@ function heroBlock({ src, alt, eyebrow, title, lede, meta = '' }) {
   return `<section class="hero">
   <div class="wrap">
     <div class="hero-media">
-      <img src="${src}" alt="${esc(alt)}" width="${config.hero.width}" height="${config.hero.height}" fetchpriority="high" decoding="async">
+      <img src="${u(src)}" alt="${esc(alt)}" width="${config.hero.width}" height="${config.hero.height}" fetchpriority="high" decoding="async">
     </div>
     <div class="hero-copy">
       ${eyebrow ? `<p class="eyebrow">${esc(eyebrow)}</p>` : ''}
@@ -401,7 +413,7 @@ function heroBlock({ src, alt, eyebrow, title, lede, meta = '' }) {
 function postCard(post) {
   return `      <li class="card">
         <article>
-          <a class="card-link" href="${post.url}">
+          <a class="card-link" href="${u(post.url)}">
             <h3 class="card-title">${esc(post.title)}</h3>
           </a>
           <p class="card-summary">${esc(post.summary)}</p>
@@ -497,9 +509,9 @@ ${
   <ul class="cards">
 ${others.map(postCard).join('\n')}
   </ul>
-  <p class="back"><a href="/">← 回到首頁</a></p>
+  <p class="back"><a href="${u('/')}">← 回到首頁</a></p>
 </section>`
-    : '<section class="more wrap"><p class="back"><a href="/">← 回到首頁</a></p></section>'
+    : `<section class="more wrap"><p class="back"><a href="${u('/')}">← 回到首頁</a></p></section>`
 }`
 
   return layout({
@@ -515,7 +527,7 @@ ${others.map(postCard).join('\n')}
 
 function renderSitemap(posts) {
   const base = config.siteUrl || ''
-  const urls = [{ loc: '/', lastmod: posts[0]?.updated || TODAY }, ...posts.map((p) => ({ loc: p.url, lastmod: p.updated }))]
+  const urls = [{ loc: u('/'), lastmod: posts[0]?.updated || TODAY }, ...posts.map((p) => ({ loc: u(p.url), lastmod: p.updated }))]
   return `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${urls.map((u) => `  <url><loc>${base}${u.loc}</loc><lastmod>${u.lastmod}</lastmod></url>`).join('\n')}
@@ -536,7 +548,7 @@ ${posts
   .map(
     (p) => `  <item>
     <title>${esc(p.title)}</title>
-    <link>${base}${p.url}</link>
+    <link>${base}${u(p.url)}</link>
     <guid isPermaLink="false">${esc(p.slug)}</guid>
     <author>${esc(p.author)}</author>
     <pubDate>${new Date(`${p.published}T00:00:00Z`).toUTCString()}</pubDate>
