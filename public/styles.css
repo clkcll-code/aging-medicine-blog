@@ -224,7 +224,8 @@ a:hover { text-decoration-thickness: 2px; }
 .hero-media img {
   width: 100%;
   height: auto;          /* 等比例，永不變形 */
-  aspect-ratio: 1600 / 1064;
+  /* 長寬比由 build.mjs 讀圖片檔後逐張寫成 inline style，這裡只留保險值。 */
+  aspect-ratio: 8 / 5;
   object-fit: cover;
   border-radius: var(--radius);
   border: 1px solid var(--border);

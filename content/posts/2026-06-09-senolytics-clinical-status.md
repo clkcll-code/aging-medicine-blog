@@ -4,6 +4,7 @@ slug: senolytics-clinical-status
 date: 2026-06-09
 summary: 清除衰老細胞在小鼠身上延長了健康壽命，是近十年老化研究最亮眼的成果之一。但目前人體試驗的規模、終點指標與結果一致性，都還不足以支持任何臨床建議。
 tags: [Senolytics, 臨床試驗]
+hero: /assets/hero-senolytics.png
 ---
 
 2011 年 Baker 等人在小鼠身上證明：選擇性清除表現 p16 的衰老細胞，能延緩白內障、肌少症與脂肪組織流失。這篇論文開啟了 senolytics 這個領域。十五年過去，人體證據累積到什麼程度？
