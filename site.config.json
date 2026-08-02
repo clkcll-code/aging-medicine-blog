@@ -1,91 +1,26 @@
 {
   "title": "老化醫學前沿",
   "tagline": "追蹤全球老化醫學研究，把論文讀成人話",
-  "description": "分享最新的老化醫學（geroscience）研究：粒線體功能、細胞衰老、表觀遺傳時鐘、senolytics、代謝與長壽介入措施的實證整理。",
+  "description": "分享最新的老化醫學（geroscience）研究：細胞衰老、表觀遺傳時鐘、senolytics、代謝與長壽介入措施的實證整理。",
   "author": "ALEX",
   "lang": "zh-Hant-TW",
   "siteUrl": "",
   "contentWidthNote": "HERO 圖寬度上限與內文欄寬一致，見 styles.css 的 --content-width",
-
-  "heroNote": "首頁 HERO 圖。各篇文章在自己的 frontmatter 用 hero: 指定，未指定就退回這張。",
-  "hero": { "src": "/assets/hero-home.svg" },
-
-  "imagesNote": "圖片登記表。key 是站內路徑，每張圖自帶尺寸、替代文字與授權資訊；頁尾會依當頁實際用到的圖顯示對應出處。credit.self 為 true 代表本站原創圖表。",
-  "images": {
-    "/assets/hero-home.svg": {
-      "width": 1600,
-      "height": 1000,
-      "alt": "以粒線體為中心的老化醫學研究地圖，向外連接細胞衰老、表觀遺傳時鐘、慢性發炎、老藥新用與代謝失調等主題",
-      "credit": {
-        "self": true,
-        "title": "老化醫學研究地圖",
-        "author": "ALEX",
-        "license": "CC BY 4.0",
-        "licenseUrl": "https://creativecommons.org/licenses/by/4.0/"
-      }
-    },
-    "/assets/hero-mitochondria-hub.svg": {
-      "width": 1600,
-      "height": 1000,
-      "alt": "圖解：粒線體位於中央，向外連到產能、代謝樞紐、發炎訊號與細胞命運四種角色，說明它為何成為多種老化疾病的共同節點",
-      "credit": {
-        "self": true,
-        "title": "粒線體：老化研究的共同節點",
-        "author": "ALEX",
-        "license": "CC BY 4.0",
-        "licenseUrl": "https://creativecommons.org/licenses/by/4.0/"
-      }
-    },
-    "/assets/hero-epigenetic-clocks.svg": {
-      "width": 1600,
-      "height": 1000,
-      "alt": "圖解：左側是以甲基化位點作為刻度的時鐘，右側列出三代表觀遺傳時鐘模型——第一代 Horvath 估算實際年齡、第二代 PhenoAge 與 GrimAge 預測死亡風險、第三代 DunedinPACE 測量老化速率",
-      "credit": {
-        "self": true,
-        "title": "表觀遺傳時鐘：三代模型在算什麼",
-        "author": "ALEX",
-        "license": "CC BY 4.0",
-        "licenseUrl": "https://creativecommons.org/licenses/by/4.0/"
-      }
-    },
-    "/assets/hero-senolytics.svg": {
-      "width": 1600,
-      "height": 1000,
-      "alt": "圖解：左側小鼠實驗中衰老細胞被清除後健康壽命延長，右側人體試驗規模仍在數十人等級且終點指標不一致，兩者之間存在轉譯落差",
-      "credit": {
-        "self": true,
-        "title": "Senolytics：從小鼠奇蹟到人體落差",
-        "author": "ALEX",
-        "license": "CC BY 4.0",
-        "licenseUrl": "https://creativecommons.org/licenses/by/4.0/"
-      }
-    },
-    "/assets/hero-repurposed-drugs.svg": {
-      "width": 1600,
-      "height": 1000,
-      "alt": "圖解：證據階梯上三種老藥的位置，rapamycin 停在動物實驗，metformin 有人體觀察資料但隨機試驗未完成，GLP-1 已有大型隨機試驗但終點是心腎而非老化",
-      "credit": {
-        "self": true,
-        "title": "三種「抗老藥」，三個證據等級",
-        "author": "ALEX",
-        "license": "CC BY 4.0",
-        "licenseUrl": "https://creativecommons.org/licenses/by/4.0/"
-      }
-    },
-    "/assets/hero-hallmarks.svg": {
-      "width": 1600,
-      "height": 1000,
-      "alt": "圖解：老化的十二個標誌依原發性、拮抗性、整合性三層分類排列，其中巨自噬失能、慢性發炎與微生物相失衡為 2023 年新增",
-      "credit": {
-        "self": true,
-        "title": "老化的十二個標誌",
-        "author": "ALEX",
-        "license": "CC BY 4.0",
-        "licenseUrl": "https://creativecommons.org/licenses/by/4.0/"
-      }
+  "hero": {
+    "src": "/assets/hero-cellular-senescence.jpg",
+    "width": 1600,
+    "height": 1064,
+    "alt": "螢光顯微鏡影像：人類細胞經 etoposide 處理後，藍色為 DAPI 染色的細胞核 DNA、綠色為微管、紅色為標記 DNA 損傷位點的 53BP1 蛋白",
+    "credit": {
+      "title": "Cellular senescence",
+      "author": "Velichko Artem",
+      "sourceName": "Wikimedia Commons",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Cellular_senescence.png",
+      "license": "CC BY 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "modification": "本站將原圖等比例縮放至寬 1600 px 並轉存為 JPEG"
     }
   },
-
   "supabase": {
     "url": "",
     "anonKey": "",
