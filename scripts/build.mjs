@@ -41,6 +41,19 @@ function u(p) {
   return BASE + p
 }
 
+/**
+ * 查圖片登記表。每張圖自帶尺寸、替代文字與授權，
+ * 頁尾才能依當頁實際用到的那張圖顯示對應出處。
+ */
+function imageMeta(src) {
+  const entry = (config.images || {})[src]
+  if (!entry) {
+    // 沒登記的圖不該上線：漏標出處是授權風險，寧可讓建置失敗。
+    throw new Error(`圖片 ${src} 未登記在 site.config.json 的 images 裡，無法產生出處標示`)
+  }
+  return { src, width: entry.width || 1600, height: entry.height || 1000, alt: entry.alt || '', credit: entry.credit }
+}
+
 // ---------------------------------------------------------------- 小工具
 
 function readJSON(file, fallback = null) {
@@ -285,7 +298,7 @@ function readPosts() {
         published,
         updated,
         hero: data.hero || config.hero.src,
-        heroAlt: data.heroAlt || config.hero.alt,
+        heroAlt: data.heroAlt || '',
         html,
         readingMinutes: Math.max(1, Math.round(body.replace(/\s/g, '').length / 400)),
       }
@@ -317,7 +330,7 @@ function supabaseBootstrap() {
   return `<script id="site-data" type="application/json">${JSON.stringify(payload).replace(/</g, '\\u003c')}</script>`
 }
 
-function layout({ title, description, bodyClass, canonical, pageSlug = '', head = '', content }) {
+function layout({ title, description, bodyClass, canonical, pageSlug = '', head = '', image, content }) {
   const siteTitle = config.title
   const fullTitle = title === siteTitle ? siteTitle : `${title}｜${siteTitle}`
   return `<!DOCTYPE html>
@@ -332,7 +345,7 @@ ${canonical && config.siteUrl ? `<link rel="canonical" href="${config.siteUrl}${
 <meta property="og:type" content="website">
 <meta property="og:title" content="${esc(fullTitle)}">
 <meta property="og:description" content="${esc(description)}">
-<meta property="og:image" content="${u(config.hero.src)}">
+<meta property="og:image" content="${u(image.src)}">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="alternate" type="application/rss+xml" title="${esc(siteTitle)}" href="${u('/rss.xml')}">
 <link rel="stylesheet" href="${u('/styles.css')}">
@@ -357,26 +370,38 @@ ${supabaseBootstrap()}
 <main id="main">
 ${content}
 </main>
-${footer()}
+${footer(image)}
 <script src="${u('/counter.js')}" defer></script>
 </body>
 </html>
 `
 }
 
-function footer() {
-  const c = config.hero.credit
+function creditLine(c) {
+  const license = `<a href="${c.licenseUrl}" target="_blank" rel="noopener noreferrer">${esc(c.license)}</a>`
+
+  // 本站原創圖表：沒有第三方權利人，改為聲明授權條件，方便別人合法轉用。
+  if (c.self) {
+    return `本頁主視覺 <cite>${esc(c.title)}</cite> 為本站原創資訊圖，
+        由 <span class="credit-author">${esc(c.author)}</span> 繪製，
+        以 ${license} 釋出，轉用請保留出處。`
+  }
+
+  // 第三方圖片：CC BY 要求標示作者、來源與授權，並註明是否修改過。
+  return `本頁主視覺
+        <a href="${c.sourceUrl}" target="_blank" rel="noopener noreferrer"><cite>${esc(c.title)}</cite></a>
+        由 <span class="credit-author">${esc(c.author)}</span> 創作，
+        取自 <a href="${c.sourceUrl}" target="_blank" rel="noopener noreferrer">${esc(c.sourceName)}</a>，
+        依 ${license} 授權使用。${c.modification ? esc(c.modification) + '。' : ''}`
+}
+
+function footer(image) {
   return `<footer class="site-footer">
   <div class="wrap">
     <section class="credit" aria-labelledby="credit-heading">
       <h2 id="credit-heading">圖片出處與授權</h2>
       <p class="credit-line">
-        主視覺圖片
-        <a href="${c.sourceUrl}" target="_blank" rel="noopener noreferrer"><cite>${esc(c.title)}</cite></a>
-        由 <span class="credit-author">${esc(c.author)}</span> 創作，
-        取自 <a href="${c.sourceUrl}" target="_blank" rel="noopener noreferrer">${esc(c.sourceName)}</a>，
-        依 <a href="${c.licenseUrl}" target="_blank" rel="noopener noreferrer">${esc(c.license)}</a> 授權使用。
-        ${esc(c.modification)}。
+        ${creditLine(image.credit)}
       </p>
     </section>
     <section class="disclaimer">
@@ -394,11 +419,12 @@ function footer() {
 </footer>`
 }
 
-function heroBlock({ src, alt, eyebrow, title, lede, meta = '' }) {
+function heroBlock({ image, alt, eyebrow, title, lede, meta = '' }) {
+  // 長寬比由圖片自己帶，CSS 不再寫死 —— 換圖不必改樣式，也永遠不會變形。
   return `<section class="hero">
   <div class="wrap">
     <div class="hero-media">
-      <img src="${u(src)}" alt="${esc(alt)}" width="${config.hero.width}" height="${config.hero.height}" fetchpriority="high" decoding="async">
+      <img src="${u(image.src)}" alt="${esc(alt || image.alt)}" width="${image.width}" height="${image.height}" style="aspect-ratio:${image.width}/${image.height}" fetchpriority="high" decoding="async">
     </div>
     <div class="hero-copy">
       ${eyebrow ? `<p class="eyebrow">${esc(eyebrow)}</p>` : ''}
@@ -433,12 +459,12 @@ function postCard(post) {
 
 function renderIndex(posts) {
   const latestUpdate = posts.length ? posts[0].updated : TODAY
+  const image = imageMeta(config.hero.src)
   // 卡片直接寫進 HTML，不經前端 JS 產生。
   const cards = posts.map(postCard).join('\n')
 
   const content = `${heroBlock({
-    src: config.hero.src,
-    alt: config.hero.alt,
+    image,
     eyebrow: '老化醫學 · geroscience',
     title: config.title,
     lede: config.tagline,
@@ -460,12 +486,14 @@ ${cards}
     description: config.description,
     bodyClass: 'page-home',
     canonical: '/',
+    image,
     content,
   })
 }
 
 function renderPost(post, allPosts) {
   const others = allPosts.filter((p) => p.slug !== post.slug).slice(0, 3)
+  const image = imageMeta(post.hero)
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'BlogPosting',
@@ -478,7 +506,7 @@ function renderPost(post, allPosts) {
   }
 
   const content = `${heroBlock({
-    src: post.hero,
+    image,
     alt: post.heroAlt,
     eyebrow: post.tags[0] || '研究筆記',
     title: post.title,
@@ -521,6 +549,7 @@ ${others.map(postCard).join('\n')}
     canonical: post.url,
     pageSlug: post.slug,
     head: `<script type="application/ld+json">${JSON.stringify(jsonLd).replace(/</g, '\\u003c')}</script>`,
+    image,
     content,
   })
 }

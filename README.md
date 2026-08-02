@@ -18,6 +18,7 @@ slug: english-slug          # 網址會是 /posts/english-slug/
 date: 2026-08-02            # 發布日期
 summary: 一段話的摘要，會顯示在首頁卡片與搜尋結果。
 tags: [標籤一, 標籤二]
+hero: /assets/hero-你的圖.svg   # 這篇的主視覺，省略就用首頁那張
 ---
 
 正文從這裡開始，用 Markdown 撰寫。
@@ -65,10 +66,10 @@ content/post-state.json 各篇的內容雜湊與最後更新日期（自動維�
 public/                 原樣複製到網站根目錄的靜態檔
   styles.css            全站樣式
   counter.js            Supabase 瀏覽計數器
-  assets/               圖片
+  assets/               各篇主視覺 SVG
 scripts/build.mjs       靜態網站產生器
 scripts/serve.mjs       本機預覽伺服器
-site.config.json        站台設定（標題、作者、HERO 圖與授權、Supabase 金鑰）
+site.config.json        站台設定（標題、作者、圖片登記表、Supabase 金鑰）
 dist/                   建置輸出（已 gitignore，由 CI 產生）
 ```
 
@@ -169,11 +170,30 @@ npm run build && git add -A && git commit -m "啟用瀏覽計數器" && git push
 
 ---
 
-## 圖片授權
+## 圖片與授權
 
-主視覺圖片 *Cellular senescence* 由 **Velichko Artem** 創作，取自 [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Cellular_senescence.png)，依 [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) 授權使用。本站將原圖等比例縮放至寬 1600 px 並轉存為 JPEG。
+每篇文章有各自的主視覺，全部是本站原創的 SVG 資訊圖，**不含任何第三方素材，沒有授權風險**。圖以 [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) 釋出，頁尾會顯示當頁實際用到的那張圖的出處。
 
-依 CC BY 4.0 要求，此標示同時出現在網站每一頁的頁尾。
+| 檔案 | 用在哪 |
+| --- | --- |
+| `hero-home.svg` | 首頁 · 老化醫學研究地圖 |
+| `hero-mitochondria-hub.svg` | 粒線體的四種角色 |
+| `hero-epigenetic-clocks.svg` | 三代表觀遺傳時鐘 |
+| `hero-senolytics.svg` | 小鼠與人體的轉譯落差 |
+| `hero-repurposed-drugs.svg` | 三種老藥的證據階梯 |
+| `hero-hallmarks.svg` | 老化十二個標誌的三層分類 |
+
+### 換圖或加新圖
+
+1. 把 SVG（或 JPG／PNG）放進 `public/assets/`。
+2. 到 `site.config.json` 的 `images` 登記它的 `width`、`height`、`alt` 與 `credit`。
+   - 自己畫的：`"credit": { "self": true, "title": "...", "author": "ALEX", "license": "CC BY 4.0", "licenseUrl": "..." }`
+   - 別人的 CC BY 圖：改填 `sourceName`、`sourceUrl`、`modification`，不要加 `self`。
+3. 在文章 frontmatter 寫 `hero: /assets/你的檔名`。
+
+**沒登記就建置失敗**，這是刻意的 —— 漏標出處是授權風險，寧可在本機就擋下來。
+
+長寬比由登記表的尺寸算出來寫進 HTML，換圖不必改 CSS，圖也永遠不會被拉變形。
 
 ---
 

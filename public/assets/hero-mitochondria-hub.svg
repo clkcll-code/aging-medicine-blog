@@ -1,0 +1,100 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" role="img" aria-label="資訊圖：粒線體位於中央，向外連到產能、代謝樞紐、發炎訊號與細胞命運四種角色，說明它為何成為多種老化疾病的共同節點">
+<defs>
+  <linearGradient id="sky" x1="0" y1="0" x2="0.4" y2="1">
+    <stop offset="0" stop-color="#08122a"/>
+    <stop offset="0.55" stop-color="#0d1e3d"/>
+    <stop offset="1" stop-color="#0a1730"/>
+  </linearGradient>
+  <radialGradient id="glowA" cx="0.5" cy="0.5" r="0.5">
+    <stop offset="0" stop-color="#2fd0b6" stop-opacity="0.30"/>
+    <stop offset="1" stop-color="#2fd0b6" stop-opacity="0"/>
+  </radialGradient>
+  <radialGradient id="glowB" cx="0.5" cy="0.5" r="0.5">
+    <stop offset="0" stop-color="#4fa8e8" stop-opacity="0.24"/>
+    <stop offset="1" stop-color="#4fa8e8" stop-opacity="0"/>
+  </radialGradient>
+  <linearGradient id="rule" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#4fc9e8" stop-opacity="0"/>
+    <stop offset="0.5" stop-color="#4fc9e8" stop-opacity="0.85"/>
+    <stop offset="1" stop-color="#4fc9e8" stop-opacity="0"/>
+  </linearGradient>
+  <linearGradient id="mitoBody" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#1b4a72"/>
+    <stop offset="1" stop-color="#12305180"/>
+  </linearGradient>
+  <filter id="soft" x="-60%" y="-60%" width="220%" height="220%">
+    <feGaussianBlur stdDeviation="14" result="b"/>
+    <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+  </filter>
+  <filter id="soft2" x="-60%" y="-60%" width="220%" height="220%">
+    <feGaussianBlur stdDeviation="6" result="b"/>
+    <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+  </filter>
+</defs>
+<style>
+  text{font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei","Hiragino Sans TC",system-ui,sans-serif}
+  .h1{font-size:60px;font-weight:800;fill:#f2f7ff;letter-spacing:1px}
+  .h2{font-size:31px;font-weight:500;fill:#6fd7ea;letter-spacing:3px}
+  .pill{font-size:38px;font-weight:700;fill:#eaf2ff}
+  .cap{font-size:25px;fill:#93accd}
+  .core{font-size:34px;font-weight:700;fill:#bfe9f5}
+</style>
+
+<rect width="1600" height="1000" fill="url(#sky)"/>
+<ellipse cx="800" cy="580" rx="620" ry="420" fill="url(#glowA)"/>
+<ellipse cx="300" cy="180" rx="520" ry="360" fill="url(#glowB)"/>
+
+<text class="h1" x="800" y="108" text-anchor="middle">粒線體：老化研究的共同節點</text>
+<text class="h2" x="800" y="162" text-anchor="middle">MITOCHONDRIA · AGING HUB</text>
+<rect x="420" y="192" width="760" height="3" fill="url(#rule)"/>
+
+<!-- 連接線 -->
+<g fill="none" stroke="#3d8fc0" stroke-width="3" opacity="0.75" filter="url(#soft2)">
+  <path d="M400 396 Q 560 430 638 512"/>
+  <path d="M1200 396 Q 1040 430 962 512"/>
+  <path d="M400 772 Q 560 738 638 656"/>
+  <path d="M1200 772 Q 1040 738 962 656"/>
+</g>
+
+<!-- 粒線體 -->
+<g filter="url(#soft)">
+  <rect x="570" y="466" width="460" height="236" rx="118" fill="url(#mitoBody)" stroke="#4fc9e8" stroke-width="4"/>
+  <clipPath id="matrix"><rect x="600" y="496" width="400" height="176" rx="88"/></clipPath>
+  <g clip-path="url(#matrix)">
+    <rect x="600" y="496" width="400" height="176" fill="#0b2340"/>
+    <g fill="none" stroke="#2fd0b6" stroke-width="12" stroke-linecap="round" opacity="0.95">
+      <path d="M646 496 v120"/><path d="M696 672 v-120"/>
+      <path d="M746 496 v120"/><path d="M796 672 v-120"/>
+      <path d="M846 496 v120"/><path d="M896 672 v-120"/>
+      <path d="M946 496 v120"/>
+    </g>
+  </g>
+  <rect x="600" y="496" width="400" height="176" rx="88" fill="none" stroke="#2fd0b6" stroke-width="3" opacity="0.9"/>
+</g>
+<text class="core" x="800" y="768" text-anchor="middle">粒線體</text>
+
+<!-- 四個角色 -->
+<g>
+  <rect x="60" y="336" width="380" height="96" rx="48" fill="#102a4d" stroke="#f0b45a" stroke-width="3"/>
+  <circle cx="118" cy="384" r="15" fill="#f0b45a" filter="url(#soft2)"/>
+  <text class="pill" x="152" y="398">產能 ATP</text>
+  <text class="cap" x="152" y="470">電子傳遞鏈供應能量</text>
+
+  <rect x="1160" y="336" width="380" height="96" rx="48" fill="#102a4d" stroke="#2fd0b6" stroke-width="3"/>
+  <circle cx="1218" cy="384" r="15" fill="#2fd0b6" filter="url(#soft2)"/>
+  <text class="pill" x="1252" y="398">代謝樞紐</text>
+  <text class="cap" x="1252" y="470">β 氧化與 TCA 循環</text>
+
+  <rect x="60" y="712" width="380" height="96" rx="48" fill="#102a4d" stroke="#ef6f9a" stroke-width="3"/>
+  <circle cx="118" cy="760" r="15" fill="#ef6f9a" filter="url(#soft2)"/>
+  <text class="pill" x="152" y="774">發炎訊號</text>
+  <text class="cap" x="152" y="846">mtDNA 外漏引發發炎</text>
+
+  <rect x="1160" y="712" width="380" height="96" rx="48" fill="#102a4d" stroke="#a186e0" stroke-width="3"/>
+  <circle cx="1218" cy="760" r="15" fill="#a186e0" filter="url(#soft2)"/>
+  <text class="pill" x="1252" y="774">細胞命運</text>
+  <text class="cap" x="1252" y="846">凋亡與品質管制</text>
+</g>
+
+<text class="cap" x="800" y="946" text-anchor="middle">失智 · 肌少症 · 脂肪肝 · 心衰竭 — 論文裡反覆出現的同一個角色</text>
+</svg>

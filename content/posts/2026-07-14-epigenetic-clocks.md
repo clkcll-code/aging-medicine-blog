@@ -4,6 +4,7 @@ slug: epigenetic-clocks
 date: 2026-07-14
 summary: 從 Horvath 到 DunedinPACE，這些用 DNA 甲基化估算年齡的模型已經迭代了三代。它們預測死亡風險的能力確實不錯，但把單次檢測結果當成個人健康分數，是對統計模型的誤用。
 tags: [生物標記, 表觀遺傳]
+hero: /assets/hero-epigenetic-clocks.svg
 ---
 
 「你的生理年齡比實際年齡年輕 5 歲」—— 這類檢測服務近年大量出現，背後多半是某種表觀遺傳時鐘。要判斷這個數字值多少錢，得先搞清楚模型在算什麼。

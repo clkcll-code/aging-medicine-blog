@@ -19,8 +19,8 @@
 | --- | --- | --- | --- |
 | 1 | 老化醫學／粒線體主題部落格，手機版不破框 | 完成 | 375px 實測：首頁與文章頁 `scrollWidth == 375`，無橫向溢出；表格包在 `.table-scroll` 內自行捲動 |
 | 2 | 每篇文章獨立網址 | 完成 | `/posts/<slug>/index.html`，同子網域 |
-| 3 | HERO 圖 + CC BY 出處標在 footer | 完成 | Wikimedia《Cellular senescence》/ Velichko Artem / CC BY 4.0，標示在每頁 `.site-footer` |
-| 4 | 文章標作者；HERO 圖等比縮放不超過內文寬 | 完成 | `作者 ALEX`；圖 1600×1064 於手機渲染為 335×223（比例 1.504 → 1.502），上限 `--content-width: 44rem` |
+| 3 | HERO 圖 + 出處標在 footer | 完成 | 六張本站原創 SVG 資訊圖，以 CC BY 4.0 釋出；頁尾依當頁實際用圖顯示對應出處 |
+| 4 | 文章標作者；HERO 圖等比縮放不超過內文寬 | 完成 | `作者 ALEX`；手機渲染 335×210，比例 1.600 與原圖一致，上限 `--content-width: 44rem` |
 | 5 | 文章與首頁卡片都有日期，更新自動換日期 | 完成 | `content/post-state.json` 存內容雜湊，`scripts/build.mjs` 比對後改「最後更新」 |
 | 6 | 首頁列表寫死在 HTML，不用 JS 讀 JSON | 完成 | `dist/index.html` 內含完整 `<article>` 卡片；JS 只負責填瀏覽數字 |
 | 7 | 新增／修改文章後首頁自動加卡片、重排序 | 完成 | `npm run build` 依「最後更新」由新到舊排序 |
@@ -28,6 +28,17 @@
 | 9 | GitHub Pages → 自動部署 Cloudflare Pages | **一半** | GitHub Pages 已上線；Cloudflare 專案尚未建立 |
 
 **GitHub Pages 網址（已上線）**：<https://clkcll-code.github.io/aging-medicine-blog/>
+
+### 圖片改版（2026-08-02）
+
+原本五篇共用同一張 Wikimedia 照片。已改為**每篇一張本站原創 SVG 資訊圖**，理由是：
+
+- 完全避開第三方授權問題（使用者要求「無版權問題」）
+- 每張圖直接畫出該篇的核心論點，不只是裝飾
+- 深色資訊圖表風格（參考使用者提供的研究週報版面），六張視覺語言一致
+- 向量檔約 5 KB，比照片小 20 倍，手機載入快且不會糊
+
+`site.config.json` 新增 `images` 登記表，每張圖自帶尺寸、替代文字與授權。**圖片沒登記就建置失敗**，避免漏標出處。舊的 `hero-cellular-senescence.jpg` 已刪除。
 
 GitHub 儲存庫：<https://github.com/clkcll-code/aging-medicine-blog>（帳號 `clkcll-code`，`gh` CLI 已登入）
 
