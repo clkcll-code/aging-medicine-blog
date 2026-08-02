@@ -1,0 +1,10 @@
+node_modules/
+dist/
+
+# Claude Code 的本機權限設定，屬個人環境，不進版控
+.claude/settings.local.json
+
+.DS_Store
+Thumbs.db
+*.log
+.wrangler/

@@ -1,0 +1,15 @@
+{
+  "name": "aging-medicine-blog",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "老化醫學前沿 — 靜態部落格，零依賴建置",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "serve": "node scripts/serve.mjs",
+    "dev": "node scripts/build.mjs && node scripts/serve.mjs"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

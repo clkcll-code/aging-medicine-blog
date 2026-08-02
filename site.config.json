@@ -1,0 +1,31 @@
+{
+  "title": "老化醫學前沿",
+  "tagline": "追蹤全球老化醫學研究，把論文讀成人話",
+  "description": "分享最新的老化醫學（geroscience）研究：細胞衰老、表觀遺傳時鐘、senolytics、代謝與長壽介入措施的實證整理。",
+  "author": "ALEX",
+  "lang": "zh-Hant-TW",
+  "siteUrl": "",
+  "contentWidthNote": "HERO 圖寬度上限與內文欄寬一致，見 styles.css 的 --content-width",
+  "hero": {
+    "src": "/assets/hero-cellular-senescence.jpg",
+    "width": 1600,
+    "height": 1064,
+    "alt": "螢光顯微鏡影像：人類細胞經 etoposide 處理後，藍色為 DAPI 染色的細胞核 DNA、綠色為微管、紅色為標記 DNA 損傷位點的 53BP1 蛋白",
+    "credit": {
+      "title": "Cellular senescence",
+      "author": "Velichko Artem",
+      "sourceName": "Wikimedia Commons",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Cellular_senescence.png",
+      "license": "CC BY 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "modification": "本站將原圖等比例縮放至寬 1600 px 並轉存為 JPEG"
+    }
+  },
+  "supabase": {
+    "url": "",
+    "anonKey": "",
+    "table": "page_views",
+    "incrementFn": "increment_view",
+    "siteSlug": "__site__"
+  }
+}
